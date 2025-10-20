@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mantra Counter — Pratham</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#0f1720;
+      --accent:#6ee7b7;
+      --accent-2:#7c6cff;
+      --muted:#98a0ab;
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,108,255,0.08), transparent 6%),
+                  radial-gradient(1000px 600px at 90% 90%, rgba(110,231,183,0.03), transparent 8%),
+                  var(--bg);
+      color:#e6eef6;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+    .card{
+      width:100%;
+      max-width:880px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:28px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:24px;
+      align-items:center;
+    }
+    .left{
+      padding:8px 12px;
+    }
+    .title{
+      display:flex;align-items:center;gap:12px;
+    }
+    .logo{
+      width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent-2),var(--accent));display:grid;place-items:center;font-weight:700;color:#021018;font-size:18px;box-shadow:0 6px 18px rgba(124,108,255,0.12);
+    }
+    h1{margin:0;font-size:20px}
+    p.lead{color:var(--muted);margin:8px 0 18px}
+
+    .counter-wrap{display:flex;gap:18px;align-items:center}
+    .count-display{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;padding:22px 24px;min-width:220px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .big-count{font-size:54px;font-weight:800;letter-spacing:2px;color:var(--accent)}
+    .meta{color:var(--muted);font-size:13px}
+
+    .controls{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+    .tap-btn{
+      appearance:none;border:0;padding:18px;border-radius:14px;font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#021018;box-shadow:0 8px 30px rgba(124,108,255,0.12);cursor:pointer;transition:transform .08s ease, box-shadow .12s ease;
+      display:flex;align-items:center;justify-content:center;gap:12px
+    }
+    .tap-btn:active{transform:translateY(2px);box-shadow:0 4px 18px rgba(124,108,255,0.08)}
+
+    .small-actions{display:flex;gap:10px}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+    .ghost:active{transform:translateY(1px)}
+
+    .right{
+      padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.02);
+      display:flex;flex-direction:column;gap:14px;align-items:stretch
+    }
+    .stat{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;background:var(--glass);border:1px solid rgba(255,255,255,0.02)}
+    .label{color:var(--muted);font-size:13px}
+    .value{font-weight:700}
+
+    .progress{height:8px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden}
+    .progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:999px;transition:width .28s ease}
+
+    .hint{color:var(--muted);font-size:13px}
+
+    footer{color:var(--muted);font-size:13px;text-align:center;padding-top:12px}
+
+    /* responsive */
+    @media (max-width:880px){
+      .card{grid-template-columns:1fr;max-width:420px}
+      .right{order:2}
+    }
+
+    /* vibrate pulse */
+    .pulse{
+      animation:vibe 900ms ease-in-out;
+      box-shadow:0 0 0 6px rgba(124,108,255,0.08),0 0 30px rgba(124,108,255,0.06);
+    }
+    @keyframes vibe{
+      0%{transform:scale(1)}
+      40%{transform:scale(1.04)}
+      100%{transform:scale(1)}
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="application">
+    <div class="left">
+      <div class="title">
+        <div class="logo">ॐ</div>
+        <div>
+          <h1>Mantra Counter</h1>
+          <div class="lead">Tap the big button each time you chant. Timer starts on first tap. Mobile vibrates at 11 &amp; 21 counts.</div>
+        </div>
+      </div>
+
+      <div class="counter-wrap" style="margin-top:18px;">
+        <div class="count-display" id="countCard">
+          <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+            <div>
+              <div class="meta">Name</div>
+              <div style="font-weight:700">Pratham Shetty</div>
+            </div>
+            <div style="text-align:right">
+              <div class="meta">Session</div>
+              <div id="sessionLabel" style="font-weight:700">Not started</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:18px;margin-top:10px;width:100%;">
+            <div>
+              <div class="big-count" id="count">0</div>
+              <div class="meta">Repetitions</div>
+            </div>
+
+            <div style="flex:1">
+              <div class="meta">Elapsed</div>
+              <div id="timer" style="font-weight:700">00:00:00</div>
+
+              <div style="height:12px;margin-top:12px">
+                <div class="progress" aria-hidden>
+                  <i id="prog"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="tap" class="tap-btn" aria-pressed="false" aria-label="Tap to count">Tap — Chanted</button>
+
+          <div class="small-actions">
+            <button id="undo" class="ghost" title="Decrease count by 1">Undo</button>
+            <button id="reset" class="ghost" title="Reset session">Reset</button>
+            <button id="save" class="ghost" title="Save session to local storage">Save</button>
+          </div>
+
+          <div class="hint">Tip: Use two taps per breath if you chant mantras that way. Vibration needs a mobile browser and permission — desktop may not vibrate.</div>
+        </div>
+      </div>
+
+      <footer>
+        Built for focus. Stay strict, stay chanting.
+      </footer>
+    </div>
+
+    <div class="right">
+      <div class="stat">
+        <div>
+          <div class="label">Goal</div>
+          <div class="value">21 chants (primary), 108 option</div>
+        </div>
+        <div style="text-align:right">
+          <div class="label">Progress</div>
+          <div id="percent" class="value">0%</div>
+        </div>
+      </div>
+
+      <div class="stat">
+        <div>
+          <div class="label">Started at</div>
+          <div id="startedAt">—</div>
+        </div>
+        <div>
+          <div class="label">Sessions saved</div>
+          <div id="savedCount">0</div>
+        </div>
+      </div>
+
+      <div style="padding:6px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02);">
+        <div class="label" style="margin-bottom:6px">Quick controls</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button id="plus5" class="ghost">+5</button>
+          <button id="plus11" class="ghost">+11</button>
+          <button id="plus21" class="ghost">+21</button>
+        </div>
+      </div>
+
+      <div style="padding:8px;border-radius:10px;background:var(--glass);border:1px solid rgba(255,255,255,0.02);">
+        <div class="label">Last saved sessions</div>
+        <div id="savedList" style="margin-top:8px;color:var(--muted);font-size:13px;max-height:140px;overflow:auto"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Basic state
+    const countEl = document.getElementById('count');
+    const tapBtn = document.getElementById('tap');
+    const timerEl = document.getElementById('timer');
+    const sessionLabel = document.getElementById('sessionLabel');
+    const startedAtEl = document.getElementById('startedAt');
+    const percentEl = document.getElementById('percent');
+    const prog = document.getElementById('prog');
+
+    let count = 0;
+    let started = false;
+    let startTs = null;
+    let timerInterval = null;
+    const primaryGoal = 21;
+
+    // load saved sessions
+    function loadSaved(){
+      const arr = JSON.parse(localStorage.getItem('mantra_sessions')||'[]');
+      document.getElementById('savedCount').textContent = arr.length;
+      const list = document.getElementById('savedList');
+      list.innerHTML = '';
+      arr.slice().reverse().forEach(s=>{
+        const d = document.createElement('div');
+        d.textContent = `${s.time} — ${s.count} reps — ${s.duration}`;
+        list.appendChild(d);
+      });
+    }
+    loadSaved();
+
+    function fmtTime(ms){
+      if(!ms) return '00:00:00';
+      const s = Math.floor(ms/1000);
+      const hrs = String(Math.floor(s/3600)).padStart(2,'0');
+      const mins = String(Math.floor((s%3600)/60)).padStart(2,'0');
+      const secs = String(s%60).padStart(2,'0');
+      return `${hrs}:${mins}:${secs}`;
+    }
+
+    function updateUI(){
+      countEl.textContent = count;
+      const pct = Math.min(100, Math.round((count/primaryGoal)*100));
+      percentEl.textContent = pct + '%';
+      prog.style.width = pct + '%';
+      sessionLabel.textContent = started ? 'In progress' : 'Not started';
+      if(started && startTs){
+        startedAtEl.textContent = new Date(startTs).toLocaleTimeString();
+      } else startedAtEl.textContent = '—';
+      // pulse for important counts
+      const card = document.getElementById('countCard');
+      if(count===11 || count===21){
+        card.classList.add('pulse');
+        setTimeout(()=>card.classList.remove('pulse'),900);
+      }
+      // persist transient state
+      localStorage.setItem('mantra_current', JSON.stringify({count,started,startTs}));
+    }
+
+    // load transient
+    (function(){
+      try{
+        const cur = JSON.parse(localStorage.getItem('mantra_current')||'null');
+        if(cur){count=cur.count||0;started=cur.started||false;startTs=cur.startTs||null;}
+        updateUI();
+        if(started && startTs){
+          startTimer();
+        }
+      }catch(e){/*ignore*/}
+    })();
+
+    function startTimer(){
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(()=>{
+        const elapsed = Date.now() - startTs;
+        timerEl.textContent = fmtTime(elapsed);
+      },250);
+    }
+
+    function doVibrate(){
+      if(navigator.vibrate){
+        // request a 3 second vibration (3000ms)
+        try{ navigator.vibrate(3000); }catch(e){}
+      }
+    }
+
+    tapBtn.addEventListener('click',()=>{
+      // start on first tap
+      if(!started){
+        started = true;
+        startTs = Date.now();
+        startTimer();
+      }
+      count += 1;
+      // vibrate on 11 and 21
+      if(count===11 || count===21){
+        doVibrate();
+      }
+      updateUI();
+    });
+
+    // small helpers
+    document.getElementById('undo').addEventListener('click',()=>{
+      if(count>0) count-=1; updateUI();
+    });
+    document.getElementById('reset').addEventListener('click',()=>{
+      if(confirm('Reset current session?')){
+        count=0; started=false; startTs=null; timerEl.textContent='00:00:00'; updateUI();
+        if(timerInterval) clearInterval(timerInterval);
+      }
+    });
+
+    document.getElementById('save').addEventListener('click',()=>{
+      if(!started){ alert('No active session to save.'); return; }
+      const arr = JSON.parse(localStorage.getItem('mantra_sessions')||'[]');
+      const duration = fmtTime(Date.now()-startTs);
+      arr.push({time:new Date(startTs).toLocaleString(),count, duration});
+      localStorage.setItem('mantra_sessions', JSON.stringify(arr));
+      loadSaved();
+      alert('Session saved');
+    });
+
+    document.getElementById('plus5').addEventListener('click',()=>{ count+=5; updateUI(); if(count>=11) checkVibQuick(); });
+    document.getElementById('plus11').addEventListener('click',()=>{ count+=11; updateUI(); if(count>=11) checkVibQuick(); });
+    document.getElementById('plus21').addEventListener('click',()=>{ count+=21; updateUI(); if(count>=21) checkVibQuick(); });
+
+    function checkVibQuick(){
+      // if we just crossed 11 or 21, vibrate
+      if(count>=21){ doVibrate(); }
+      else if(count>=11){ doVibrate(); }
+    }
+
+    // keyboard support for desktop: space/enter to tap
+    window.addEventListener('keydown',(e)=>{
+      if(e.code==='Space' || e.key==='Enter'){
+        e.preventDefault(); tapBtn.click();
+      }
+    });
+
+    // accessibility: announce updates
+    const live = document.createElement('div'); live.setAttribute('aria-live','polite'); live.style.position='absolute'; live.style.left='-9999px'; document.body.appendChild(live);
+    const obs = new MutationObserver(()=>{
+      live.textContent = `Count ${count}. ${percentEl.textContent} goal.`;
+    });
+    obs.observe(countEl,{childList:true});
+
+  </script>
+</body>
+</html>
