@@ -1,355 +1,693 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mantra Counter — Pratham</title>
-  <style>
-    :root{
-      --bg:#0b0f14;
-      --card:#0f1720;
-      --accent:#6ee7b7;
-      --accent-2:#7c6cff;
-      --muted:#98a0ab;
-      --glass: rgba(255,255,255,0.04);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,108,255,0.08), transparent 6%),
-                  radial-gradient(1000px 600px at 90% 90%, rgba(110,231,183,0.03), transparent 8%),
-                  var(--bg);
-      color:#e6eef6;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:32px;
-    }
-    .card{
-      width:100%;
-      max-width:880px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:18px;
-      padding:28px;
-      box-shadow: 0 8px 30px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.03);
-      display:grid;
-      grid-template-columns: 1fr 360px;
-      gap:24px;
-      align-items:center;
-    }
-    .left{
-      padding:8px 12px;
-    }
-    .title{
-      display:flex;align-items:center;gap:12px;
-    }
-    .logo{
-      width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent-2),var(--accent));display:grid;place-items:center;font-weight:700;color:#021018;font-size:18px;box-shadow:0 6px 18px rgba(124,108,255,0.12);
-    }
-    h1{margin:0;font-size:20px}
-    p.lead{color:var(--muted);margin:8px 0 18px}
-
-    .counter-wrap{display:flex;gap:18px;align-items:center}
-    .count-display{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:14px;padding:22px 24px;min-width:220px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;
-      border:1px solid rgba(255,255,255,0.02);
-    }
-    .big-count{font-size:54px;font-weight:800;letter-spacing:2px;color:var(--accent)}
-    .meta{color:var(--muted);font-size:13px}
-
-    .controls{display:flex;flex-direction:column;gap:12px;align-items:stretch}
-    .tap-btn{
-      appearance:none;border:0;padding:18px;border-radius:14px;font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#021018;box-shadow:0 8px 30px rgba(124,108,255,0.12);cursor:pointer;transition:transform .08s ease, box-shadow .12s ease;
-      display:flex;align-items:center;justify-content:center;gap:12px
-    }
-    .tap-btn:active{transform:translateY(2px);box-shadow:0 4px 18px rgba(124,108,255,0.08)}
-
-    .small-actions{display:flex;gap:10px}
-    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
-    .ghost:active{transform:translateY(1px)}
-
-    .right{
-      padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.02);
-      display:flex;flex-direction:column;gap:14px;align-items:stretch
-    }
-    .stat{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;background:var(--glass);border:1px solid rgba(255,255,255,0.02)}
-    .label{color:var(--muted);font-size:13px}
-    .value{font-weight:700}
-
-    .progress{height:8px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden}
-    .progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:999px;transition:width .28s ease}
-
-    .hint{color:var(--muted);font-size:13px}
-
-    footer{color:var(--muted);font-size:13px;text-align:center;padding-top:12px}
-
-    /* responsive */
-    @media (max-width:880px){
-      .card{grid-template-columns:1fr;max-width:420px}
-      .right{order:2}
-    }
-
-    /* vibrate pulse */
-    .pulse{
-      animation:vibe 900ms ease-in-out;
-      box-shadow:0 0 0 6px rgba(124,108,255,0.08),0 0 30px rgba(124,108,255,0.06);
-    }
-    @keyframes vibe{
-      0%{transform:scale(1)}
-      40%{transform:scale(1.04)}
-      100%{transform:scale(1)}
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Mantra Counter — Pratham</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#04060a;
+    --card:#0b0f14;
+    --glass: rgba(255,255,255,0.03);
+    --accent:#f6b042; /* saffron-gold */
+    --accent2:#ffd37a;
+    --muted:#9aa6b2;
+    --success:#6ee7b7;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:#e7eef6;background:
+    radial-gradient(800px 400px at 10% 10%, rgba(124,108,255,0.03), transparent 6%),
+    linear-gradient(180deg,#03060a 0%, #061018 100%);}
+  .wrap{max-width:920px;margin:18px auto;padding:14px;}
+  .app{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px;border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.7);}
+  /* HEADER */
+  .head{display:flex;gap:12px;align-items:center;}
+  .brand{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent2),var(--accent));display:grid;place-items:center;font-weight:800;color:#071018;font-size:22px;box-shadow:0 6px 18px rgba(246,176,66,0.08)}
+  .title h1{margin:0;font-size:18px}
+  .title p{margin:4px 0 0;color:var(--muted);font-size:13px}
+  /* MAIN */
+  .main{display:grid;grid-template-columns:1fr;gap:12px;}
+  .panel{background:var(--card);border-radius:14px;padding:14px;border:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column;gap:12px}
+  /* COUNTER */
+  .counter-row{display:flex;gap:12px;align-items:center;justify-content:space-between}
+  .big-button{
+    display:grid;place-items:center;width:150px;height:150px;border-radius:999px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:2px solid rgba(255,255,255,0.03);
+    box-shadow: 0 12px 40px rgba(3,6,10,0.6), inset 0 6px 18px rgba(255,255,255,0.02);font-weight:800;font-size:36px;color:var(--accent);cursor:pointer;touch-action:manipulation;
+    transition:transform .06s;}
+  .big-button:active{transform:translateY(4px) scale(.995)}
+  .meta{color:var(--muted);font-size:13px}
+  .stats{flex:1;padding-left:6px;display:flex;flex-direction:column;gap:8px}
+  .stats .row{display:flex;justify-content:space-between;align-items:center}
+  .timer{font-weight:800;font-size:20px}
+  .progress{height:10px;background:rgba(255,255,255,0.025);border-radius:999px;overflow:hidden}
+  .progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:width .28s ease}
+  .controls{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer;font-weight:600}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;border:0;box-shadow:0 10px 30px rgba(246,176,66,0.07)}
+  .small{font-size:13px;color:var(--muted)}
+  /* SESSIONS LIST */
+  .sessions{display:flex;flex-direction:column;gap:8px;max-height:160px;overflow:auto;padding-right:6px}
+  .session-item{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+  .session-item .left{display:flex;flex-direction:column}
+  .muted{color:var(--muted);font-size:13px}
+  /* MANTRAS */
+  .mantras{display:flex;flex-direction:column;gap:10px;max-height:240px;overflow:auto;padding:8px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
+  .mantra{padding:10px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+  .mantra .sansk{font-weight:700;font-size:15px;color:var(--accent)}
+  .mantra .tran{color:var(--muted);font-size:13px;margin-top:6px}
+  /* HANUMAN CHALISA */
+  .chalisa{display:flex;flex-direction:column;gap:8px;padding:8px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
+  .chalisa .controls{justify-content:space-between}
+  .playbtn{padding:10px 14px;border-radius:10px;border:0;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018}
+  .audio-progress{height:6px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden}
+  .audio-progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#ffd37a,#f6b042);transition:width .12s linear}
+  footer{color:var(--muted);font-size:12px;text-align:center;padding-top:6px}
+  /* responsive */
+  @media (max-width:520px){
+    .big-button{width:140px;height:140px;font-size:34px}
+    .timer{font-size:18px}
+  }
+</style>
 </head>
 <body>
-  <div class="card" role="application">
-    <div class="left">
+<div class="wrap">
+  <div class="app" role="application" aria-label="Mantra Counter App">
+    <div class="head">
+      <div class="brand">ॐ</div>
       <div class="title">
-        <div class="logo">ॐ</div>
-        <div>
-          <h1>Mantra Counter</h1>
-          <div class="lead">Tap the big button each time you chant. Timer starts on first tap. Mobile vibrates at 11 &amp; 21 counts.</div>
-        </div>
+        <h1>Mantra Counter — Pratham</h1>
+        <p>Tap the big button each chant. Timer starts when you start a session. Multiple sessions allowed per day.</p>
       </div>
+    </div>
 
-      <div class="counter-wrap" style="margin-top:18px;">
-        <div class="count-display" id="countCard">
-          <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
-            <div>
-              <div class="meta">Name</div>
-              <div style="font-weight:700">Pratham Shetty</div>
-            </div>
-            <div style="text-align:right">
-              <div class="meta">Session</div>
-              <div id="sessionLabel" style="font-weight:700">Not started</div>
-            </div>
+    <div class="main">
+      <!-- COUNTER PANEL -->
+      <div class="panel" id="counterPanel" aria-live="polite">
+        <div class="counter-row">
+          <div class="big-button" id="tapBtn" role="button" aria-pressed="false" aria-label="Tap to count">
+            <div id="countDisplay">0</div>
           </div>
 
-          <div style="display:flex;align-items:center;gap:18px;margin-top:10px;width:100%;">
-            <div>
-              <div class="big-count" id="count">0</div>
-              <div class="meta">Repetitions</div>
-            </div>
-
-            <div style="flex:1">
-              <div class="meta">Elapsed</div>
-              <div id="timer" style="font-weight:700">00:00:00</div>
-
-              <div style="height:12px;margin-top:12px">
-                <div class="progress" aria-hidden>
-                  <i id="prog"></i>
-                </div>
+          <div class="stats">
+            <div class="row">
+              <div>
+                <div class="muted">Session</div>
+                <div id="sessionTitle" style="font-weight:800">No session</div>
+              </div>
+              <div style="text-align:right">
+                <div class="muted">Elapsed</div>
+                <div class="timer" id="timerDisplay">00:00</div>
               </div>
             </div>
+
+            <div class="row">
+              <div style="flex:1">
+                <div class="muted">Progress to 21</div>
+                <div class="progress" aria-hidden><i id="progBar"></i></div>
+              </div>
+              <div style="width:110px;text-align:right">
+                <div class="muted">Today total</div>
+                <div id="todayTotal" style="font-weight:800">0</div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="controls">
+                <button class="btn primary" id="newSession">Start New Session</button>
+                <button class="btn" id="endSession">End Session</button>
+                <button class="btn" id="undoBtn">Undo</button>
+                <button class="btn" id="resetBtn">Reset</button>
+              </div>
+              <div>
+                <div class="muted" style="text-align:right">Saved sessions</div>
+                <div id="savedCount" style="font-weight:800;text-align:right">0</div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div class="controls">
-          <button id="tap" class="tap-btn" aria-pressed="false" aria-label="Tap to count">Tap — Chanted</button>
-
-          <div class="small-actions">
-            <button id="undo" class="ghost" title="Decrease count by 1">Undo</button>
-            <button id="reset" class="ghost" title="Reset session">Reset</button>
-            <button id="save" class="ghost" title="Save session to local storage">Save</button>
+        <div style="margin-top:6px">
+          <div class="muted">Quick add</div>
+          <div class="controls" style="margin-top:8px">
+            <button class="btn" id="add5">+5</button>
+            <button class="btn" id="add11">+11</button>
+            <button class="btn" id="add21">+21</button>
+            <button class="btn" id="saveSessionBtn">Save Session</button>
           </div>
+        </div>
 
-          <div class="hint">Tip: Use two taps per breath if you chant mantras that way. Vibration needs a mobile browser and permission — desktop may not vibrate.</div>
+        <div style="margin-top:10px">
+          <div class="muted">Today's sessions</div>
+          <div class="sessions" id="sessionsList" aria-live="polite"></div>
         </div>
       </div>
 
-      <footer>
-        Built for focus. Stay strict, stay chanting.
-      </footer>
+      <!-- MANTRAS & HISTORY PANEL -->
+      <div class="panel" style="min-height:220px;">
+        <div>
+          <div class="muted">Your personal mantras</div>
+          <div class="mantras" id="mantrasBox" style="margin-top:8px">
+            <div class="mantra">
+              <div class="sansk">ॐ ब्रां ब्रीं ब्रौं सः बुधाय नमः ।</div>
+              <div class="tran">Om Braam Breem Broum Sah Budhaya Namah — For focus & memory (Budha Beej)</div>
+            </div>
+            <div class="mantra">
+              <div class="sansk">ॐ हनुमते नमः ।</div>
+              <div class="tran">Om Hanumate Namah — For willpower, removing distractions</div>
+            </div>
+            <div class="mantra">
+              <div class="sansk">ॐ ऐं सरस्वत्यै नमः ।</div>
+              <div class="tran">Om Aim Saraswatyai Namah — For wisdom and exam success</div>
+            </div>
+            <div class="mantra">
+              <div class="sansk">ॐ श्रीं ह्रीं क्लीं श्री सिद्ध लक्ष्म्यै नमः ।</div>
+              <div class="tran">Om Shreem Hreem Kleem Shree Siddha Lakshmyai Namah — Diwali / prosperity + clarity</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="muted">History (select date)</div>
+          <input id="datePicker" type="date" style="margin-top:8px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit">
+          <div id="historyList" style="margin-top:8px;max-height:120px;overflow:auto;color:var(--muted);font-size:13px"></div>
+        </div>
+      </div>
+
+      <!-- HANUMAN CHALISA PANEL -->
+      <div class="panel chalisa" id="chalisaPanel" style="margin-top:4px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:800">Hanuman Chalisa</div>
+            <div class="muted" style="margin-top:6px">Play / pause streaming audio. Text below scrolls while playing.</div>
+          </div>
+          <div>
+            <button id="playChalisa" class="playbtn">Play</button>
+          </div>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="audio-progress" aria-hidden><i id="audioProg"></i></div>
+        </div>
+
+        <div id="chalisaText" style="margin-top:8px;max-height:220px;overflow:auto;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);font-size:14px;line-height:1.5">
+          <!-- Minimal excerpt; full text can be expanded in future -->
+          <p><strong>दोहा</strong><br>श्रीगुरु चरन सरोज रज निज मनु मुकुरु सुधारि ...</p>
+          <p><strong>चौपाई</strong><br>जय हनुमान ज्ञान गुन सागर। जय कपिस तिहु लोक उजागर॥</p>
+          <p>(Scroll while audio plays)</p>
+        </div>
+      </div>
+
     </div>
 
-    <div class="right">
-      <div class="stat">
-        <div>
-          <div class="label">Goal</div>
-          <div class="value">21 chants (primary), 108 option</div>
-        </div>
-        <div style="text-align:right">
-          <div class="label">Progress</div>
-          <div id="percent" class="value">0%</div>
-        </div>
-      </div>
-
-      <div class="stat">
-        <div>
-          <div class="label">Started at</div>
-          <div id="startedAt">—</div>
-        </div>
-        <div>
-          <div class="label">Sessions saved</div>
-          <div id="savedCount">0</div>
-        </div>
-      </div>
-
-      <div style="padding:6px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02);">
-        <div class="label" style="margin-bottom:6px">Quick controls</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button id="plus5" class="ghost">+5</button>
-          <button id="plus11" class="ghost">+11</button>
-          <button id="plus21" class="ghost">+21</button>
-        </div>
-      </div>
-
-      <div style="padding:8px;border-radius:10px;background:var(--glass);border:1px solid rgba(255,255,255,0.02);">
-        <div class="label">Last saved sessions</div>
-        <div id="savedList" style="margin-top:8px;color:var(--muted);font-size:13px;max-height:140px;overflow:auto"></div>
-      </div>
-    </div>
+    <footer>
+      <div class="muted">Built for focus — tap responsibly. Vibrations require a mobile browser and permission.</div>
+    </footer>
   </div>
+</div>
 
-  <script>
-    // Basic state
-    const countEl = document.getElementById('count');
-    const tapBtn = document.getElementById('tap');
-    const timerEl = document.getElementById('timer');
-    const sessionLabel = document.getElementById('sessionLabel');
-    const startedAtEl = document.getElementById('startedAt');
-    const percentEl = document.getElementById('percent');
-    const prog = document.getElementById('prog');
+<script>
+/* ========= Config ========= */
+const VIBRATE_MS = 3000;            // vibration length at 11 & 21
+const PRIMARY_GOAL = 21;            // used for progress bar
+// Hanuman Chalisa audio file (public archive.org example)
+const CHALISA_AUDIO_URL = "https://archive.org/download/1ShreeHanumanChalisa_20150717/1%20ShreeHanumanChalisa.ogg";
 
-    let count = 0;
-    let started = false;
-    let startTs = null;
-    let timerInterval = null;
-    const primaryGoal = 21;
+/* ========= State / Storage =========
+Data layout in localStorage:
+- 'mantra_data' => { sessionsByDate: { 'YYYY-MM-DD': [ session, ... ] } }
+- session = { id, startTs (ms), endTs (ms|null), elapsedBeforePause (ms), count, title }
+*/
+const lsKey = 'mantra_data_v2_pratham';
 
-    // load saved sessions
-    function loadSaved(){
-      const arr = JSON.parse(localStorage.getItem('mantra_sessions')||'[]');
-      document.getElementById('savedCount').textContent = arr.length;
-      const list = document.getElementById('savedList');
-      list.innerHTML = '';
-      arr.slice().reverse().forEach(s=>{
-        const d = document.createElement('div');
-        d.textContent = `${s.time} — ${s.count} reps — ${s.duration}`;
-        list.appendChild(d);
-      });
+function todayKey(d = new Date()){
+  return d.toISOString().slice(0,10);
+}
+
+function loadData(){
+  try{ return JSON.parse(localStorage.getItem(lsKey) || '{}'); }catch(e){ return {}; }
+}
+function saveData(obj){ localStorage.setItem(lsKey, JSON.stringify(obj)); }
+
+/* ensure structure */
+let DATA = loadData();
+if(!DATA.sessionsByDate) DATA.sessionsByDate = {};
+saveData(DATA);
+
+/* UI refs */
+const tapBtn = document.getElementById('tapBtn');
+const countDisplay = document.getElementById('countDisplay');
+const timerDisplay = document.getElementById('timerDisplay');
+const progBar = document.getElementById('progBar');
+const sessionTitle = document.getElementById('sessionTitle');
+const sessionsList = document.getElementById('sessionsList');
+const savedCount = document.getElementById('savedCount');
+const todayTotalEl = document.getElementById('todayTotal');
+const newSessionBtn = document.getElementById('newSession');
+const endSessionBtn = document.getElementById('endSession');
+const undoBtn = document.getElementById('undoBtn');
+const resetBtn = document.getElementById('resetBtn');
+const add5 = document.getElementById('add5');
+const add11 = document.getElementById('add11');
+const add21 = document.getElementById('add21');
+const saveSessionBtn = document.getElementById('saveSessionBtn');
+const datePicker = document.getElementById('datePicker');
+const historyList = document.getElementById('historyList');
+const audioProg = document.getElementById('audioProg');
+const playChalisaBtn = document.getElementById('playChalisa');
+const chalisaText = document.getElementById('chalisaText');
+
+/* audio */
+const audio = new Audio(CHALISA_AUDIO_URL);
+audio.crossOrigin = "anonymous";
+audio.preload = "auto";
+
+/* runtime state */
+let currentSession = null; // {id, startTs, endTs|null, elapsedBeforePause, count, title}
+let timerInterval = null;
+
+/* helper: create new session object */
+function makeSession(title){
+  return {
+    id: 's'+Date.now(),
+    startTs: Date.now(),
+    endTs: null,
+    elapsedBeforePause: 0,
+    count: 0,
+    title: title || `Session ${new Date().toLocaleTimeString()}`
+  };
+}
+
+/* Persistence helpers */
+function saveCurrentToStorage(){
+  // currentSession is saved inside today's list but not auto-ended
+  if(!currentSession) {
+    localStorage.setItem('mantra_current_pratham', JSON.stringify(null));
+    return;
+  }
+  localStorage.setItem('mantra_current_pratham', JSON.stringify(currentSession));
+  // also ensure it's in DATA.sessionsByDate[today]
+  const key = todayKey(new Date(currentSession.startTs));
+  DATA.sessionsByDate[key] = DATA.sessionsByDate[key] || [];
+  // either update existing or push
+  const idx = DATA.sessionsByDate[key].findIndex(s=>s.id===currentSession.id);
+  if(idx>=0) DATA.sessionsByDate[key][idx] = currentSession;
+  else DATA.sessionsByDate[key].push(currentSession);
+  saveData(DATA);
+}
+
+function loadCurrentFromStorage(){
+  try{
+    const cur = JSON.parse(localStorage.getItem('mantra_current_pratham')||'null');
+    if(cur) {
+      currentSession = cur;
+      // ensure session present in DATA
+      const key = todayKey(new Date(cur.startTs));
+      DATA.sessionsByDate[key] = DATA.sessionsByDate[key] || [];
+      if(!DATA.sessionsByDate[key].some(s=>s.id===cur.id)) DATA.sessionsByDate[key].push(cur);
+      saveData(DATA);
     }
-    loadSaved();
+  }catch(e){}
+}
 
-    function fmtTime(ms){
-      if(!ms) return '00:00:00';
-      const s = Math.floor(ms/1000);
-      const hrs = String(Math.floor(s/3600)).padStart(2,'0');
-      const mins = String(Math.floor((s%3600)/60)).padStart(2,'0');
-      const secs = String(s%60).padStart(2,'0');
-      return `${hrs}:${mins}:${secs}`;
+/* archive older days: move sessions if user changed device date or it's next day */
+function archiveOld(){
+  const keys = Object.keys(DATA.sessionsByDate);
+  const today = todayKey();
+  // no deletion needed; just leave them
+  // remove any transient "current" from older dates: if currentSession exists but its date != today, we keep it as paused but will allow user to start new session
+  saveData(DATA);
+}
+
+/* UI updates */
+function updateUI(){
+  // current session display
+  if(currentSession){
+    sessionTitle.textContent = currentSession.title;
+    countDisplay.textContent = currentSession.count;
+    // elapsed
+    const elapsed = currentSession.elapsedBeforePause + (currentSession.endTs ? (currentSession.endTs - currentSession.startTs - currentSession.elapsedBeforePause) : (timerInterval ? Date.now() - currentSession.startTs : 0));
+    // BUT simpler: if session is active (no endTs and timerInterval running), compute elapsed = elapsedBeforePause + (Date.now() - startRunningAt)
+    let displayMs = currentSession.elapsedBeforePause;
+    if(!currentSession.endTs && timerInterval) {
+      displayMs = currentSession.elapsedBeforePause + (Date.now() - currentSession._runningSince);
+    } else if(currentSession.endTs){
+      displayMs = (currentSession.endTs - currentSession.startTs);
     }
+    timerDisplay.textContent = formatMs(displayMs);
+  } else {
+    sessionTitle.textContent = 'No session';
+    countDisplay.textContent = '0';
+    timerDisplay.textContent = '00:00';
+  }
 
-    function updateUI(){
-      countEl.textContent = count;
-      const pct = Math.min(100, Math.round((count/primaryGoal)*100));
-      percentEl.textContent = pct + '%';
-      prog.style.width = pct + '%';
-      sessionLabel.textContent = started ? 'In progress' : 'Not started';
-      if(started && startTs){
-        startedAtEl.textContent = new Date(startTs).toLocaleTimeString();
-      } else startedAtEl.textContent = '—';
-      // pulse for important counts
-      const card = document.getElementById('countCard');
-      if(count===11 || count===21){
-        card.classList.add('pulse');
-        setTimeout(()=>card.classList.remove('pulse'),900);
-      }
-      // persist transient state
-      localStorage.setItem('mantra_current', JSON.stringify({count,started,startTs}));
-    }
+  // progress to 21
+  const cnt = currentSession ? currentSession.count : 0;
+  const pct = Math.min(100, Math.round((cnt/PRIMARY_GOAL)*100));
+  progBar.style.width = pct + '%';
 
-    // load transient
-    (function(){
-      try{
-        const cur = JSON.parse(localStorage.getItem('mantra_current')||'null');
-        if(cur){count=cur.count||0;started=cur.started||false;startTs=cur.startTs||null;}
-        updateUI();
-        if(started && startTs){
-          startTimer();
-        }
-      }catch(e){/*ignore*/}
-    })();
+  // today's total
+  const today = todayKey();
+  const todaySessions = DATA.sessionsByDate[today] || [];
+  const totalToday = todaySessions.reduce((s,ss)=> s + (ss.count||0), 0);
+  todayTotalEl.textContent = totalToday;
 
-    function startTimer(){
-      if(timerInterval) clearInterval(timerInterval);
-      timerInterval = setInterval(()=>{
-        const elapsed = Date.now() - startTs;
-        timerEl.textContent = fmtTime(elapsed);
-      },250);
-    }
+  // saved count
+  const allCount = Object.values(DATA.sessionsByDate).reduce((a,b)=>a+b.length,0);
+  savedCount.textContent = allCount;
 
-    function doVibrate(){
-      if(navigator.vibrate){
-        // request a 3 second vibration (3000ms)
-        try{ navigator.vibrate(3000); }catch(e){}
-      }
-    }
+  // sessions list today
+  renderSessionsList();
+}
 
-    tapBtn.addEventListener('click',()=>{
-      // start on first tap
-      if(!started){
-        started = true;
-        startTs = Date.now();
-        startTimer();
-      }
-      count += 1;
-      // vibrate on 11 and 21
-      if(count===11 || count===21){
-        doVibrate();
-      }
+/* render list */
+function renderSessionsList(){
+  const key = todayKey();
+  const arr = (DATA.sessionsByDate[key]||[]).slice().reverse();
+  sessionsList.innerHTML = '';
+  if(arr.length===0){
+    sessionsList.innerHTML = '<div class="muted">No sessions yet</div>';
+    return;
+  }
+  arr.forEach(s=>{
+    const el = document.createElement('div');
+    el.className = 'session-item';
+    const left = document.createElement('div'); left.className='left';
+    const title = document.createElement('div'); title.textContent = s.title; title.style.fontWeight='700';
+    const meta = document.createElement('div'); meta.className='muted';
+    const start = new Date(s.startTs).toLocaleTimeString();
+    const dur = s.endTs ? formatMs(s.endTs - s.startTs) : (s.elapsedBeforePause ? formatMs(s.elapsedBeforePause) + ' (paused)' : 'in progress');
+    meta.textContent = `${s.count} chants • ${start} • ${dur}`;
+    left.appendChild(title); left.appendChild(meta);
+
+    const right = document.createElement('div');
+    right.style.display='flex'; right.style.flexDirection='column'; right.style.alignItems='flex-end'; right.style.gap='6px';
+    const playBtn = document.createElement('button'); playBtn.className='btn'; playBtn.textContent='Load';
+    playBtn.onclick = ()=>{ loadSessionIntoCurrent(s.id); };
+    const delBtn = document.createElement('button'); delBtn.className='btn'; delBtn.textContent='Delete';
+    delBtn.onclick = ()=>{ if(confirm('Delete this session?')){ deleteSession(s.id); } };
+    right.appendChild(playBtn); right.appendChild(delBtn);
+
+    el.appendChild(left); el.appendChild(right);
+    sessionsList.appendChild(el);
+  });
+}
+
+/* utilities */
+function formatMs(ms){
+  if(!ms) return '00:00';
+  const s = Math.floor(ms/1000);
+  const m = Math.floor(s/60); const sec = s%60;
+  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+/* Start / Pause / End session behavior
+- Starting a new session always creates a fresh session and starts timer.
+- If there is a loaded paused session, New Session will prompt to save or discard.
+- End Session marks endTs and saves.
+- If user closes browser mid-session, session is left paused (elapsedBeforePause updated).
+*/
+function startNewSession(){
+  if(currentSession && !currentSession.endTs){
+    if(!confirm('A session is already in progress. Start a new one? This will pause current.')) return;
+    pauseCurrent();
+  }
+  currentSession = makeSession();
+  // mark runningSince to compute live elapsed
+  currentSession._runningSince = Date.now();
+  startTimerInterval();
+  saveCurrentToStorage();
+  updateUI();
+}
+
+function pauseCurrent(){
+  if(!currentSession) return;
+  if(currentSession._runningSince){
+    currentSession.elapsedBeforePause = (currentSession.elapsedBeforePause || 0) + (Date.now() - currentSession._runningSince);
+    delete currentSession._runningSince;
+  }
+  // leave endTs null (paused), but persist
+  saveCurrentToStorage();
+  stopTimerInterval();
+  updateUI();
+}
+
+function resumeCurrent(){
+  if(!currentSession) return;
+  if(currentSession.endTs){
+    alert('Cannot resume a session that has ended. Start a new session.');
+    return;
+  }
+  if(!currentSession._runningSince){
+    currentSession._runningSince = Date.now();
+    startTimerInterval();
+    saveCurrentToStorage();
+  }
+}
+
+function endCurrent(){
+  if(!currentSession) return;
+  // compute final elapsed and set endTs
+  if(currentSession._runningSince){
+    currentSession.elapsedBeforePause = (currentSession.elapsedBeforePause || 0) + (Date.now() - currentSession._runningSince);
+    delete currentSession._runningSince;
+  }
+  currentSession.endTs = Date.now();
+  // persist done
+  saveCurrentToStorage();
+  stopTimerInterval();
+  const key = todayKey(new Date(currentSession.startTs));
+  DATA.sessionsByDate[key] = DATA.sessionsByDate[key] || [];
+  const idx = DATA.sessionsByDate[key].findIndex(s=>s.id===currentSession.id);
+  if(idx>=0) DATA.sessionsByDate[key][idx]=currentSession;
+  else DATA.sessionsByDate[key].push(currentSession);
+  saveData(DATA);
+  currentSession = null;
+  localStorage.removeItem('mantra_current_pratham');
+  updateUI();
+}
+
+/* Timer interval */
+function startTimerInterval(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{
+    updateUI();
+  },250);
+}
+function stopTimerInterval(){ if(timerInterval) clearInterval(timerInterval); timerInterval = null; }
+
+/* counting and vibration */
+function tapCount(increment = 1){
+  if(!currentSession){
+    // if no current, start one automatically
+    currentSession = makeSession();
+    currentSession._runningSince = Date.now();
+    startTimerInterval();
+  }
+  // ensure _runningSince exists
+  if(!currentSession._runningSince && !currentSession.endTs) currentSession._runningSince = Date.now();
+
+  currentSession.count = (currentSession.count || 0) + increment;
+  // vibrate when hitting 11 or 21 exactly
+  if(currentSession.count === 11 || currentSession.count === 21){
+    try{ if(navigator.vibrate) navigator.vibrate(VIBRATE_MS); }catch(e){}
+    // small UI pulse
+    document.querySelector('.big-button').animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:700});
+  }
+  saveCurrentToStorage();
+  updateUI();
+}
+
+/* undo, reset */
+function undo(){
+  if(!currentSession) return;
+  if(currentSession.count>0) currentSession.count -= 1;
+  saveCurrentToStorage();
+  updateUI();
+}
+function resetSession(){
+  if(!currentSession) return;
+  if(!confirm('Reset current session count to 0?')) return;
+  currentSession.count = 0;
+  currentSession.elapsedBeforePause = 0;
+  if(currentSession._runningSince) currentSession._runningSince = Date.now();
+  saveCurrentToStorage();
+  updateUI();
+}
+
+/* hard save session (end) */
+function saveSession(){
+  if(!currentSession){
+    alert('No active session to save.');
+    return;
+  }
+  // if running, pause and set end
+  if(currentSession._runningSince){
+    currentSession.elapsedBeforePause = (currentSession.elapsedBeforePause || 0) + (Date.now() - currentSession._runningSince);
+    delete currentSession._runningSince;
+  }
+  currentSession.endTs = Date.now();
+  const key = todayKey(new Date(currentSession.startTs));
+  DATA.sessionsByDate[key] = DATA.sessionsByDate[key] || [];
+  const idx = DATA.sessionsByDate[key].findIndex(s=>s.id===currentSession.id);
+  if(idx>=0) DATA.sessionsByDate[key][idx] = currentSession;
+  else DATA.sessionsByDate[key].push(currentSession);
+  saveData(DATA);
+  // clear current
+  currentSession = null;
+  localStorage.removeItem('mantra_current_pratham');
+  stopTimerInterval();
+  updateUI();
+  alert('Session saved.');
+}
+
+/* session load/delete */
+function loadSessionIntoCurrent(id){
+  // find session by id
+  for(const [date,arr] of Object.entries(DATA.sessionsByDate)){
+    const s = arr.find(x=>x.id===id);
+    if(s){
+      // load into currentSession as paused (do not auto-start)
+      currentSession = Object.assign({}, s);
+      // clear running marker
+      delete currentSession._runningSince;
+      saveCurrentToStorage();
+      stopTimerInterval();
       updateUI();
-    });
-
-    // small helpers
-    document.getElementById('undo').addEventListener('click',()=>{
-      if(count>0) count-=1; updateUI();
-    });
-    document.getElementById('reset').addEventListener('click',()=>{
-      if(confirm('Reset current session?')){
-        count=0; started=false; startTs=null; timerEl.textContent='00:00:00'; updateUI();
-        if(timerInterval) clearInterval(timerInterval);
-      }
-    });
-
-    document.getElementById('save').addEventListener('click',()=>{
-      if(!started){ alert('No active session to save.'); return; }
-      const arr = JSON.parse(localStorage.getItem('mantra_sessions')||'[]');
-      const duration = fmtTime(Date.now()-startTs);
-      arr.push({time:new Date(startTs).toLocaleString(),count, duration});
-      localStorage.setItem('mantra_sessions', JSON.stringify(arr));
-      loadSaved();
-      alert('Session saved');
-    });
-
-    document.getElementById('plus5').addEventListener('click',()=>{ count+=5; updateUI(); if(count>=11) checkVibQuick(); });
-    document.getElementById('plus11').addEventListener('click',()=>{ count+=11; updateUI(); if(count>=11) checkVibQuick(); });
-    document.getElementById('plus21').addEventListener('click',()=>{ count+=21; updateUI(); if(count>=21) checkVibQuick(); });
-
-    function checkVibQuick(){
-      // if we just crossed 11 or 21, vibrate
-      if(count>=21){ doVibrate(); }
-      else if(count>=11){ doVibrate(); }
+      window.scrollTo({top:0,behavior:'smooth'});
+      return;
     }
+  }
+  alert('Session not found.');
+}
+function deleteSession(id){
+  for(const [date,arr] of Object.entries(DATA.sessionsByDate)){
+    const idx = arr.findIndex(x=>x.id===id);
+    if(idx>=0){ arr.splice(idx,1); if(arr.length===0) delete DATA.sessionsByDate[date]; saveData(DATA); updateUI(); return; }
+  }
+}
 
-    // keyboard support for desktop: space/enter to tap
-    window.addEventListener('keydown',(e)=>{
-      if(e.code==='Space' || e.key==='Enter'){
-        e.preventDefault(); tapBtn.click();
-      }
-    });
+/* date picker history */
+datePicker.addEventListener('change', ()=>{
+  const key = datePicker.value;
+  renderHistoryFor(key);
+});
+function renderHistoryFor(key){
+  historyList.innerHTML = '';
+  if(!key) return;
+  const arr = DATA.sessionsByDate[key] || [];
+  if(arr.length===0){ historyList.innerHTML = '<div class="muted">No sessions for this date</div>'; return; }
+  arr.slice().reverse().forEach(s=>{
+    const d = document.createElement('div');
+    d.style.padding='8px'; d.style.borderRadius='8px'; d.style.marginBottom='8px'; d.style.background='rgba(255,255,255,0.01)';
+    d.innerHTML = `<div style="font-weight:800">${s.title}</div>
+      <div class="muted">${new Date(s.startTs).toLocaleTimeString()} • ${s.count} chants • ${s.endTs ? formatMs(s.endTs - s.startTs) : (s.elapsedBeforePause? formatMs(s.elapsedBeforePause)+' (paused)' : 'in progress')}</div>`;
+    historyList.appendChild(d);
+  });
+}
 
-    // accessibility: announce updates
-    const live = document.createElement('div'); live.setAttribute('aria-live','polite'); live.style.position='absolute'; live.style.left='-9999px'; document.body.appendChild(live);
-    const obs = new MutationObserver(()=>{
-      live.textContent = `Count ${count}. ${percentEl.textContent} goal.`;
-    });
-    obs.observe(countEl,{childList:true});
+/* keyboard support on desktop */
+window.addEventListener('keydown',(e)=>{
+  if(e.key === ' ' || e.key === 'Enter'){
+    e.preventDefault();
+    tapBtn.click();
+  }
+});
 
-  </script>
+/* event bindings */
+tapBtn.addEventListener('click', ()=> {
+  // If there is a current session that is ended, start new session instead
+  if(currentSession && currentSession.endTs){
+    if(!confirm('Current loaded session is already ended. Start a new session?')) return;
+    currentSession = null;
+  }
+  // if session exists but is paused, resume it
+  if(currentSession && !currentSession.endTs && !currentSession._runningSince){
+    // resume
+    currentSession._runningSince = Date.now();
+    startTimerInterval();
+    saveCurrentToStorage();
+  }
+  tapCount(1);
+});
+
+newSessionBtn.addEventListener('click', startNewSession);
+endSessionBtn.addEventListener('click', ()=> {
+  if(!currentSession){ alert('No active session.'); return; }
+  if(confirm('End and save this session?')){
+    endCurrent();
+  }
+});
+undoBtn.addEventListener('click', undo);
+resetBtn.addEventListener('click', resetSession);
+add5.addEventListener('click', ()=> { tapCount(5); });
+add11.addEventListener('click', ()=> { tapCount(11); });
+add21.addEventListener('click', ()=> { tapCount(21); });
+saveSessionBtn.addEventListener('click', saveSession);
+
+/* load current on start */
+(function init(){
+  // archive old days (no-op here but kept)
+  archiveOld();
+  // load current if exists
+  loadCurrentFromStorage();
+  // If currentSession exists and has _runningSince timestamp stored, that's invalid across browser close -> convert to paused
+  if(currentSession && currentSession._runningSince){
+    // mark as paused: accumulate elapsed and clear runningSince
+    currentSession.elapsedBeforePause = (currentSession.elapsedBeforePause || 0) + (Date.now() - currentSession._runningSince);
+    delete currentSession._runningSince;
+    saveCurrentToStorage();
+  }
+  updateUI();
+  // populate date picker default to today
+  datePicker.value = todayKey();
+  renderHistoryFor(datePicker.value);
+})();
+
+/* audio handling for Hanuman Chalisa */
+playChalisaBtn.addEventListener('click', ()=>{
+  if(audio.paused){
+    audio.play().catch(err=>{ alert('Playback blocked by browser. Tap play again or allow audio.')});
+    playChalisaBtn.textContent = 'Pause';
+  } else {
+    audio.pause();
+    playChalisaBtn.textContent = 'Play';
+  }
+});
+audio.addEventListener('timeupdate', ()=>{
+  const pct = audio.duration ? Math.max(0, Math.min(1, audio.currentTime / audio.duration)) : 0;
+  audioProg.style.width = (pct*100) + '%';
+  // optional: auto-scroll chalisa text a bit as audio plays
+  try{
+    chalisaText.scrollTop = (chalisaText.scrollHeight - chalisaText.clientHeight) * pct;
+  }catch(e){}
+});
+audio.addEventListener('ended', ()=>{ playChalisaBtn.textContent = 'Play'; audioProg.style.width = '0%'; chalisaText.scrollTop = 0; });
+
+/* ensure protection: if user leaves site or unloads, pause session (convert running to paused) */
+window.addEventListener('beforeunload', ()=>{
+  if(currentSession && currentSession._runningSince){
+    currentSession.elapsedBeforePause = (currentSession.elapsedBeforePause || 0) + (Date.now() - currentSession._runningSince);
+    delete currentSession._runningSince;
+    saveCurrentToStorage();
+  }
+});
+
+/* Accessibility: announce important milestones */
+const live = document.createElement('div'); live.setAttribute('aria-live','polite'); live.style.position='absolute'; live.style.left='-9999px'; document.body.appendChild(live);
+const announce = (txt)=>{ live.textContent = txt; };
+
+/* watch count so crossing 11/21 triggers announcement too */
+setInterval(()=>{
+  if(currentSession){
+    if(currentSession.count === 11) announce('Reached eleven chants');
+    if(currentSession.count === 21) announce('Reached twenty one chants');
+  }
+},1000);
+
+</script>
 </body>
 </html>
